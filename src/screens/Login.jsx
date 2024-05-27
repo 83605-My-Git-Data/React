@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 
 
@@ -24,6 +25,9 @@ export default function Login(){
 
             toast.error('Please enter password')
             
+        }
+        else{
+            //call login api
         }
     }
  
@@ -59,7 +63,7 @@ export default function Login(){
                         </div>
                         
                         <div>
-                            <div>Don't have an account?</div>
+                            <div>Don't have an account? <Link to='/register'>Register here</Link> </div>
                             <button onClick={onLogin} className="btn btn-success mt-2">Login</button>
                         </div>
                    

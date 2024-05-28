@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
+import { login } from "../services/admin";
 
 
 
@@ -10,7 +11,10 @@ export default function Login(){
     const[password,setPassword] = useState('');
 
 
-    function onLogin(){
+    const navigate = useNavigate();
+
+
+  async   function onLogin(){
 
         console.log('inside');
         if(email.length ==  0){
@@ -28,10 +32,19 @@ export default function Login(){
         }
         else{
             //call login api
+              const res  =  await login(email,password);
+              if(res.status == 'success'){
+                const data = res.data;
+
+                sessionStorage.name = data.name;
+                sessionStorage.token = data.token;
+                navigate('/home')
+                
+              }
         }
     }
  
-
+  
 
 
     return(

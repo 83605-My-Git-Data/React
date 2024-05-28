@@ -2,23 +2,25 @@ import { Link } from "react-router-dom";
 
 export default function Navbar(){
     return(
-        <nav className="navbar navbar-expanded-lg bg-body-tertiary bg-dar" data-bs-theme='dark'>
+        <nav className="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+  <div className="container-fluid">
+    <a className="navbar-brand" href="#">Navbar</a>
+ 
+    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+        <Link
+                to='/home'
+                className='nav-link'
+                aria-current='page'
+                href='#'
+              >
+                Home
+              </Link>
+          
+        </li>
 
-            <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-            MyAirbnb
-        </a>
-
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-
-                <li className="nav-item">
-                    <Link to='/home' className="nav-link"
-                    aria-current= 'page'
-                    href='#'>Home</Link>
-                </li>
-
-                <li className='nav-item'>
+        <li className='nav-item'>
               <Link
                 to='/properties'
                 className='nav-link'
@@ -58,15 +60,13 @@ export default function Navbar(){
                 Logout
               </Link>
             </li>
-         
-
-
-            </ul>
-        </div>
-
-
-
-            </div>
-        </nav>
+       
+    
+      
+      </ul>
+     
+    </div>
+  </div>
+</nav>
     )
 }

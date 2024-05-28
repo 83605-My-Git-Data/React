@@ -1,5 +1,7 @@
 import { useState } from "react"
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import { register } from "../services/admin";
 
 export default function Register(){
     const [firstName,setFirstName] = useState('');
@@ -7,6 +9,44 @@ export default function Register(){
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('')
     const [confirmPassword,setConfirmPassword] = useState('')
+
+    const navigate = useNavigate();
+
+
+    async function onRegister(){
+        if(firstName.length == 0 ){
+            toast.error('Enter Firstname')
+        }
+        else if(lastName.length == 0 ){
+            toast.error('Enter LastName')
+        }
+        else if(email.length == 0 ){
+            toast.error('Enter email')
+        }
+        else if(password.length == 0 ){
+            toast.error('Enter password')
+        }
+        else if(confirmPassword.length == 0 ){
+            toast.error('Confirm your password')
+        }
+        else if(password != confirmPassword){
+           alert('Passwords do not match')
+        }
+
+        else{
+            //calling the resgister api
+
+              const res = await register(firstName,lastName,email,password)
+              if(res.status == 'success'){
+                toast.success('succesfully registered admin user')
+                navigate('/login')
+
+              }
+              else {
+                toast.error(res.error)
+              }
+        }
+    }
 
 
 
@@ -39,6 +79,7 @@ export default function Register(){
                         <div className="mb-3">
                             <label htmlFor="">Password</label>
                             <input type="password" onChange={(ev)=>{
+                                setPassword(ev.target.value)
 
                             }}  className="form-control"/>
 
@@ -56,7 +97,7 @@ export default function Register(){
                         <div className="mb-3">
                             <div>Already have an account? <Link to='/login' >Login here </Link>
                             </div>
-                            <button className="btn btn-success mt-2">Register</button>
+                            <button onClick={onRegister} className="btn btn-success mt-2">Register</button>
                            
                         </div>
                     </div>

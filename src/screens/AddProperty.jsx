@@ -3,6 +3,9 @@
 import { useState } from "react";
 import Navbar from "../components/navbar";
 import Amnetites from "../components/amneties";
+import { Link ,useNavigate} from "react-router-dom";
+import { toast } from 'react-toastify';
+import { addProperty } from "../services/property";
 
 export default function AddProperty(){
     const[title,setTitle] = useState('');//
@@ -22,7 +25,55 @@ export default function AddProperty(){
     const[beds,setBeds] = useState(0);//
     const[bathrooms,setBathRooms] = useState(0);//
     const[rent,setRent] = useState(0);//
-    // const[profileImage,setProfileImage] = useState(undefined);
+
+    const[image,setImage] = useState(undefined);
+
+
+    const navigate = useNavigate();
+
+    async function saveThis(){
+        if(title.length == 0){
+            toast.warn('Enter title');
+        }
+        else if(contactNo.length == 0){
+            toast.warn('Enter contact No');
+        }
+        else if(ownerName.length == 0){
+            toast.warn('Enter owner name');
+        }
+        else{
+            const result = await addProperty(
+                title,
+                contactNo,
+                ownerName,
+                details,
+                address,
+                guests,
+                bedrooms,
+                bathrooms,
+                beds,
+                rent,
+                isLakeView,
+                isTV,
+                isAc,
+                isWifi,
+                isMiniBar,
+                isBreakfast,
+                isParking,
+                image
+              )
+
+              if(result.status == 'success'){
+                toast.success('Added property')
+                navigate('/properties')
+                
+              }
+              else{
+                toast.error(result.error);
+              }
+        }
+    }
+   
 
 
     return(
@@ -35,16 +86,22 @@ export default function AddProperty(){
                     <div className="col">
                         <div>
                             <label htmlFor="">Title</label>
-                            <input type="text" className="form-control" />
+                            <input onChange={(ev)=>{
+                                setTitle(ev.target.value)
+                            }} type="text" className="form-control" />
                         </div>
                     </div>
                     <div className="col">
                         <label htmlFor="">Contact Name</label>
-                        <input type="text" className="form-control" />
+                        <input type="text" onChange={(ev)=>{
+                            setOwnerName(ev.target.value)
+                        }} className="form-control" />
                     </div>
                     <div className="col">
                         <label htmlFor="">Contact Number</label>
-                        <input type="text" className="form-control" />
+                        <input type="text" onChange={(e)=>{
+                            setContactNo(e.target.value)
+                        }} className="form-control" />
 
                     </div>
                 </div>
@@ -53,20 +110,26 @@ export default function AddProperty(){
                     <div className="col">
                         <div>
                             <label htmlFor=""># Guests</label>
-                            <input type="text" className="form-control" />
+                            <input type="text" onChange={(e)=>{
+                                setGuests(e.target.value)
+                            }} className="form-control" />
                         </div>
                     </div>
                     <div className="col">
                         <div>
                             <label htmlFor=""># Bedrooms</label>
-                            <input type="text" className="form-control" />
+                            <input type="text"  onChange={(e)=>{
+                                setBedRooms(e.target.value)
+                            }} className="form-control" />
                         </div>
                     </div>
 
                     <div className="col">
                         <div>
                             <label htmlFor=""># Beds</label>
-                            <input type="text" className="form-control" />
+                            <input type="text" onChange={(e)=>{
+                                setBeds(e.target.value)
+                            }} className="form-control" />
                         </div>
                     </div>
                 </div>
@@ -76,7 +139,9 @@ export default function AddProperty(){
                 <div className="col">
                         <div>
                             <label htmlFor="">Address</label>
-                            <textarea type="text" className="form-control" 
+                            <textarea type="text" onChange={(e)=>{
+                                setAddress(e.target.value)
+                            }} className="form-control" 
                             rows={3} />
                         </div>
                     </div>
@@ -84,7 +149,9 @@ export default function AddProperty(){
                     <div className="col">
                         <div>
                             <label htmlFor="">Details</label>
-                            <textarea type="text" className="form-control" 
+                            <textarea type="text" onChange={(e)=>{
+                                setDetails(e.target.value)
+                            }} className="form-control" 
                             rows={3}/>
                         </div>
                     </div>
@@ -98,7 +165,9 @@ export default function AddProperty(){
                 <div className="col">
                         <div>
                             <label htmlFor=""># Bathrooms</label>
-                            <input type="text" className="form-control" 
+                            <input type="text" onChange={(e)=>{
+                                setBathRooms(e.target.value)
+                            }} className="form-control" 
                              />
                         </div>
                     </div>
@@ -106,7 +175,9 @@ export default function AddProperty(){
                     <div className="col">
                         <div>
                             <label htmlFor="">Rent</label>
-                            <input type="text" className="form-control" 
+                            <input type="text" onChange={(e)=>{
+                                setRent(e.target.value)
+                            }} className="form-control" 
                             />
                         </div>
                     </div>
@@ -157,6 +228,30 @@ export default function AddProperty(){
                         </div>
                     </div>
                 </div>
+
+                <div className='mb-3'>
+          <label htmlFor=''>Image</label>
+          <input
+            accept='image/*'
+
+
+           
+            type='file'
+            className='form-control'
+            onChange={(e)=>{
+                setImage(e.target.files[0])
+            }}
+          />
+        </div>
+
+        <div className='mb-3'>
+          <button  className='btn btn-success me-2' onClick={saveThis}>
+            Save 
+          </button>
+          <Link to='/properties' className='btn btn-danger'>
+            Cancel
+          </Link>
+        </div>
 
             </div>
         </div>

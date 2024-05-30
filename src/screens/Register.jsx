@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link,useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { register } from "../services/admin";
+import { register, registerUser } from "../services/admin";
 
 export default function Register(){
     const [firstName,setFirstName] = useState('');
@@ -46,6 +46,44 @@ export default function Register(){
                 toast.error(res.error)
               }
         }
+    }
+
+
+    async function onRegisterUser(){
+
+       
+            if(firstName.length == 0 ){
+                toast.error('Enter Firstname')
+            }
+            else if(lastName.length == 0 ){
+                toast.error('Enter LastName')
+            }
+            else if(email.length == 0 ){
+                toast.error('Enter email')
+            }
+            else if(password.length == 0 ){
+                toast.error('Enter password')
+            }
+            else if(confirmPassword.length == 0 ){
+                toast.error('Confirm your password')
+            }
+            else if(password != confirmPassword){
+               alert('Passwords do not match')
+            }
+
+            else{
+                const res = await registerUser(firstName,lastName,email,password)
+              if(res.status == 'success'){
+                toast.success('succesfully registered user ')
+                navigate('/login')
+
+              }
+              else {
+                toast.error(res.error)
+              }
+            }
+    
+
     }
 
 
@@ -97,7 +135,8 @@ export default function Register(){
                         <div className="mb-3">
                             <div>Already have an account? <Link to='/login' >Login here </Link>
                             </div>
-                            <button onClick={onRegister} className="btn btn-success mt-2">Register</button>
+                            <button onClick={onRegister} className="btn btn-success mt-2 me-4">Register as admin</button>
+                            <button onClick={onRegisterUser} className="btn btn-success mt-2">Register as user</button>
                            
                         </div>
                     </div>

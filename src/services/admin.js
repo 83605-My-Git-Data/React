@@ -27,6 +27,33 @@ export async function register(firstName,lastName,email,password){
 
 }
 
+
+export async function registerUser(firstName,lastName,email,password){
+    const body = {firstName,lastName,email,password};
+
+    try{
+        const responce =  await axios.post(`${config.serverURL}/user/register`,body)
+
+
+       
+
+        return responce.data;
+
+    }
+    catch(ex){
+        console.log('exception: ',ex);
+    }
+
+
+    return null
+  
+
+   
+
+}
+
+
+
 export async function login(email,password){
     const body = {email,password};
 

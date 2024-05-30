@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import { Link ,useNavigate,useLocation} from "react-router-dom";
-import { addProperty, getDetailsOfProperty } from "../services/property";
+import { addProperty, getDetailsOfProperty, updateProperty } from "../services/property";
 import Amnetites from "../components/amneties";
 import { toast } from 'react-toastify';
 
@@ -49,10 +49,11 @@ export default function PropertyDetails(){
             const data =  await getDetailsOfProperty(id)
             if(data.status == 'success'){
                 const property = data.data
+                console.log("your property : "+property);
                
-                console.log("Insideeeeeeee: "+property.title);
+                // console.log("Insideeeeeeee: "+property.title);
 
-                console.log("add: "+data.data.address);
+                // console.log("add: "+data.data.address);
 
                 setTitle(property.title)
                 setDetails(property.details);
@@ -66,13 +67,55 @@ export default function PropertyDetails(){
                 setBeds(property.beds)
                 setIsLakeView(property.isLakeView);
                 setIsWifi(property.isWifi)
-                console.log(property.isWifi);
+                setIsMiniBar(property.isMiniBar);
+                setIsParking(property.isParking);
+                setIsAc(property.isAC);
+                setIsBreakFast(property.isBreakfast);
+                setIsTv(property.isTV);
+                setImage(property.profileImage);
+
+
+               
+
+                
 
            }
 
   
 
   }
+
+
+           async function saveIt(){
+              const result = await  updateProperty(title,
+                    contactNo,
+                    ownerName,
+                    details,
+                    address,
+                    guests,
+                    bedrooms,
+                    bathrooms,
+                    beds,
+                    rent,
+                    isLakeView,
+                    isTV,
+                    isAc,
+                    isWifi,
+                    isMiniBar,
+                    isBreakfast,
+                    isParking,
+                    image,
+                    location.state.id
+                  )
+
+                  if(result.status == 'success'){
+                    toast.success('updated property')
+                    navigate('/properties')
+                  }
+                  else{
+                    toast.error(result.error)
+                  }
+            }
 
             
 
@@ -192,43 +235,46 @@ export default function PropertyDetails(){
                     <div className="row">
                         <div className="col">
                             <Amnetites title='lake-view'
-                            onChange={(status)=>{
-                                setIsLakeView(status)
-                               
-                            }}
-                            checked={isLakeView}  icon='bi-water'/>
+                            onChange={(status)=> setIsLakeView(status) }
+                            shouldIUpdate = {isLakeView}
+                            icon='bi-water'/>
 
                             <Amnetites
                             onChange={(status) => setIsTv(status)}
                                 title='TV'
                                 icon='bi-tv'
+                                shouldIUpdate = {isTV}
                             />
                             <Amnetites
                                 onChange={(status) => setIsAc(status)}
                                 title='AC'
                                 icon='bi-activity'
+                                shouldIUpdate = {isAc}
                             />
                             <Amnetites
                                 onChange={(status) => setIsWifi(status)}
                                 title='WiFi'
                                 
                                 icon='bi-wifi'
-                                checked={isWifi}
+                                shouldIUpdate = {isWifi}
                             />
                             <Amnetites
                                 onChange={(status) => setIsMiniBar(status)}
                                 title='Minibar'
                                 icon='bi-droplet-half'
+                                shouldIUpdate = {isMiniBar}
                             />
                             <Amnetites
                                 onChange={(status) => setIsBreakFast(status)}
                                 title='Breakfast'
                                 icon='bi-egg-fried'
+                                shouldIUpdate={isBreakfast}
                             />
                             <Amnetites
                                 onChange={(status) => setIsParking(status)}
                                 title='Parking'
                                 icon='bi-p-circle'
+                                shouldIUpdate = {isParking}
                             />
 
                         </div>
@@ -247,11 +293,12 @@ export default function PropertyDetails(){
             onChange={(e)=>{
                 setImage(e.target.files[0])
             }}
+            
           />
         </div>
 
         <div className='mb-3'>
-          <button  className='btn btn-success me-2' >
+          <button  onClick={saveIt}  className='btn btn-success me-2' >
             Save 
           </button>
           <Link to='/properties' className='btn btn-danger'>

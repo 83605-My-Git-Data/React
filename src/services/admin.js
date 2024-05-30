@@ -9,6 +9,9 @@ export async function register(firstName,lastName,email,password){
     try{
         const responce =  await axios.post(`${config.serverURL}/admin/register`,body)
 
+
+       
+
         return responce.data;
 
     }

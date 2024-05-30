@@ -69,3 +69,44 @@ export async function addProperty(
       
     }
 
+
+export async function getProperty(){
+
+    try{
+
+        const token = sessionStorage.getItem('token')
+
+        const responce =   await axios.get(`${config.serverURL}/property`,{
+            headers:{token}
+        })
+
+     return responce.data
+
+    }
+    catch(ex){
+        console.log('exception',ex);
+    }
+     
+}
+
+
+export async function getDetailsOfProperty(id){
+
+    try{
+
+        const token = sessionStorage.getItem('token')
+        const responce =  await axios.get(`${config.serverURL}/property/details/${id}`,{
+            headers:{token}
+        })
+        console.log(responce.data);
+
+        return responce.data
+
+    }
+    catch(e){
+        console.log('exception',e);
+    }
+
+   
+}
+

@@ -192,6 +192,9 @@ export default function AddProperty(){
                     <div className="row">
                         <div className="col">
                             <Amnetites title='lake-view'
+                            onChange={(status)=>{
+                                setIsLakeView(status)
+                            }}
                             icon='bi-water'/>
 
                             <Amnetites
